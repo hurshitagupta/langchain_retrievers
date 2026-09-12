@@ -347,5 +347,126 @@ The metadata filter implementation successfully:
 * Proves that every returned document matches the requested metadata.
 * Includes automated success and failure tests.
 
+---
+
+## Task 5 — Benchmark
+
+### Objective
+
+The goal of this task is to compare the dense, sparse, and hybrid retrieval strategies using measurable results rather than opinions.
+
+The two metrics used are:
+
+* `recall@5` — measures whether the relevant document appears within the top 5 retrieved results.
+* `p95 latency` — measures retrieval performance at the 95th percentile.
+
+All three retrieval strategies are evaluated using the same labelled query set to keep the comparison consistent.
+
+### Labelled Query Set
+
+A small labelled query set is created where every query has a known relevant document.
+
+For example:
+
+```python id="29yvmj"
+{
+    "query": "BM25 term frequency",
+    "relevant_id": "doc2",
+}
+```
+
+This means `doc2` is considered the expected relevant document for this query.
+
+### Recall@5
+
+For each query, the IDs of the top five retrieved documents are checked.
+
+```python id="lpp7ci"
+retrieved_ids = [
+    document.metadata["id"]
+    for document in results[:5]
+]
+```
+
+If the expected relevant document is present, the query receives a recall value of `1`. Otherwise, it receives `0`.
+
+### Latency Measurement
+
+Retrieval latency is measured using `time.perf_counter()`.
+
+```python id="m9cm64"
+start = time.perf_counter()
+
+results = retriever.invoke(query)
+
+end = time.perf_counter()
+
+latency_ms = (end - start) * 1000
+```
+
+The recorded latencies are then used to calculate p95 latency.
+
+
+### Benchmark Limitation
+
+The corpus used in this assessment contains only five documents, while the metric being measured is recall@5.
+
+Therefore, this is a small and relatively easy retrieval benchmark, which helps explain why all three strategies achieved a recall@5 of `1.0`.
+
+A larger corpus would provide a more challenging benchmark and could show clearer differences in retrieval quality between dense, sparse, and hybrid strategies.
+
+### Validation
+
+The benchmark validates that latency measurements are available before calculating p95.
+
+```python id="ebcxdf"
+if not latencies:
+    raise ValueError("latencies cannot be empty")
+```
+
+This prevents a percentile calculation from being performed without any measurements.
+
+### Tests
+
+The automated tests cover:
+
+* **Success case** — runs the benchmark and verifies that recall@5 is between `0` and `1` and that latency is non-negative.
+* **Failure case** — verifies that attempting to calculate p95 with an empty latency list raises a `ValueError`.
+
+Run the tests:
+
+```bash id="rg1o8u"
+uv run pytest tests/test_benchmark.py -v
+```
+
+Save the test output:
+
+```bash id="dh3rj1"
+uv run pytest tests/test_benchmark.py -v > outputs/test_benchmark_output.txt 2>&1
+```
+
+### Run the Benchmark
+
+```bash id="ymn9du"
+uv run python -m benchmark.benchmark
+```
+
+### Save the Benchmark Output
+
+```bash id="izsjxu"
+uv run python -m benchmark.benchmark > outputs/benchmark.txt 2>&1
+```
+
+### Task 5 Result
+
+The benchmark successfully:
+
+* Uses the same labelled query set for all retrieval strategies.
+* Measures recall@5.
+* Measures p95 retrieval latency.
+* Compares dense, sparse, and hybrid retrieval using actual numbers.
+* Includes automated success and failure tests.
+* Identifies the limitations of the small benchmark corpus.
+
 
 
