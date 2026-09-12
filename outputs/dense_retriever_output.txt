@@ -1,0 +1,8 @@
+QUERY:
+How can I search documents by meaning?
+
+RESULTS:
+doc1 | Vector search finds documents using semantic similarity.
+doc2 | BM25 ranks documents using matching words and term frequency.
+
+TOTAL RESULTS: 2
