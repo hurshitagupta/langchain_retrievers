@@ -1,0 +1,9 @@
+QUERY:
+BM25 term frequency
+
+RESULTS:
+doc2 | BM25 ranks documents using matching words and term frequency.
+doc5 | Recall measures how many relevant documents were successfully retrieved.
+doc4 | Metadata filters restrict retrieval using document properties.
+
+TOTAL RESULTS: 3

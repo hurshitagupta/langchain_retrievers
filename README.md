@@ -66,7 +66,7 @@ uv run python -m dense_retriever.dense_retriever
 ### Save the Output
 
 ```bash
-uv run python -m dense_retriever.dense_retriever > outputs/dense_retriever.txt 2>&1
+uv run python -m dense_retriever.dense_retriever > outputs/dense_retriever_output.txt 2>&1
 ```
 
 ### Tests
@@ -101,3 +101,80 @@ The dense retriever successfully:
 * Includes automated success and failure tests.
 
 This completes the Dense Retriever requirement for Task 1.
+
+## Task 2 — Sparse Retriever
+
+### Objective
+
+The goal of this task is to implement a sparse retriever using BM25 over the same document corpus used by the dense retriever.
+
+Unlike dense retrieval, which searches using semantic similarity, BM25 mainly ranks documents based on matching terms between the query and the document.
+
+### Implementation
+
+The implementation uses LangChain's `BM25Retriever`.
+
+```python
+retriever = BM25Retriever.from_documents(DOCUMENTS)
+retriever.k = k
+```
+
+The same `DOCUMENTS` corpus from Task 1 is reused so that dense and sparse retrieval can later be compared fairly.
+
+The `k` value is configurable and controls the maximum number of documents returned by the retriever.
+
+### Validation
+
+Basic validation is added to prevent invalid `k` values:
+
+```python
+if k <= 0:
+    raise ValueError("k must be greater than 0")
+```
+
+This provides a clear failure path instead of allowing an invalid retriever configuration.
+
+### Run the Task
+
+```bash
+uv run python -m sparse_retriever.sparse_retriever
+```
+
+### Save the Output
+
+```bash
+uv run python -m sparse_retriever.sparse_retriever > outputs/sparse_retriever_output.txt 
+```
+
+### Tests
+
+The automated tests cover:
+
+* **Success case** — verifies that results are returned, `k` is respected, and the expected BM25 document is ranked first.
+* **Failure case** — verifies that `k=0` raises a `ValueError`.
+
+Run the tests:
+
+```bash
+uv run pytest tests/test_sparse_retriever.py -v
+```
+
+Save the test output:
+
+```bash
+uv run pytest tests/test_sparse_retriever.py -v > outputs/test_sparse_retriever.txt 2>&1
+```
+
+### Task 2 Result
+
+The sparse retriever successfully:
+
+* Uses BM25 for lexical retrieval.
+* Reuses the same corpus as the dense retriever.
+* Ranks documents based on matching terms.
+* Supports configurable `k`.
+* Validates invalid `k` values.
+* Includes automated success and failure tests.
+
+This completes the Sparse Retriever requirement for Task 2.
+
