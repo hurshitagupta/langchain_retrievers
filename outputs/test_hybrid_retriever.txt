@@ -1,0 +1,22 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\Hurshita Gupta\OneDrive\Desktop\langchain_retrievers\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Hurshita Gupta\OneDrive\Desktop\langchain_retrievers
+configfile: pyproject.toml
+plugins: anyio-4.15.1, langsmith-0.12.4
+collecting ... collected 2 items
+
+tests/test_hybrid_retriever.py::test_hybrid_retriever_success PASSED     [ 50%]
+tests/test_hybrid_retriever.py::test_hybrid_retriever_invalid_k PASSED   [100%]
+
+============================== warnings summary ===============================
+dense_retriever\dense_retriever.py:6
+  C:\Users\Hurshita Gupta\OneDrive\Desktop\langchain_retrievers\dense_retriever\dense_retriever.py:6: DeprecationWarning: `langchain-community` is being sunset and is no longer actively maintained. See https://github.com/langchain-ai/langchain-community/issues/674 for details and migration guidance toward standalone integration packages.
+    from langchain_community.vectorstores import FAISS
+
+tests/test_hybrid_retriever.py::test_hybrid_retriever_success
+  C:\Users\Hurshita Gupta\OneDrive\Desktop\langchain_retrievers\.venv\Lib\site-packages\langchain_core\vectorstores\base.py:1048: UserWarning: Relevance scores must be between 0 and 1, got [(Document(id='855de881-b768-42f2-9c80-f4e5b021e427', metadata={'id': 'doc2', 'source': 'guide', 'tag': 'sparse'}, page_content='BM25 ranks documents using matching words and term frequency.'), np.float32(0.41337413)), (Document(id='f54f6b4c-257c-4c78-b8a4-d6f6b74d07c7', metadata={'id': 'doc5', 'source': 'notes', 'tag': 'benchmark'}, page_content='Recall measures how many relevant documents were successfully retrieved.'), np.float32(-0.13314176)), (Document(id='6a256f3a-1868-4bb2-9102-30f6d6536a8d', metadata={'id': 'doc3', 'source': 'blog', 'tag': 'hybrid'}, page_content='Hybrid retrieval combines dense and sparse search results.'), np.float32(-0.19171941))]
+    self.vectorstore.similarity_search_with_relevance_scores(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 2 passed, 2 warnings in 4.83s ========================

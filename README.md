@@ -100,8 +100,6 @@ The dense retriever successfully:
 * Validates invalid configuration values.
 * Includes automated success and failure tests.
 
-This completes the Dense Retriever requirement for Task 1.
-
 ## Task 2 — Sparse Retriever
 
 ### Objective
@@ -176,5 +174,83 @@ The sparse retriever successfully:
 * Validates invalid `k` values.
 * Includes automated success and failure tests.
 
-This completes the Sparse Retriever requirement for Task 2.
+---
+
+## Task 3 — Hybrid Fusion
+
+### Objective
+
+The goal of this task is to combine the dense and sparse retrievers created in the previous tasks into one hybrid retrieval strategy.
+
+The hybrid retriever uses both:
+
+* Dense retrieval for semantic similarity.
+* Sparse BM25 retrieval for keyword-based matching.
+
+### Implementation
+
+The implementation uses LangChain's `EnsembleRetriever`.
+
+The dense retriever from Task 1 and sparse retriever from Task 2 are reused instead of creating new retrieval logic.
+
+Both retrievers are then passed to `EnsembleRetriever`:
+
+```python
+hybrid = EnsembleRetriever(
+    retrievers=[dense, sparse],
+    weights=[0.6, 0.4],
+)
+```
+### Validation
+
+The function validates the value of `k` before creating the retriever.
+
+```python
+if k <= 0:
+    raise ValueError("k must be greater than 0")
+```
+
+This prevents invalid retriever configurations.
+
+### Run the Task
+
+```bash
+uv run python -m hybrid_retriever.hybrid_retriever
+```
+
+### Save the Output
+
+```bash
+uv run python -m hybrid_retriever.hybrid_retriever > outputs/hybrid_retriever_output.txt 2>&1
+```
+
+### Tests
+
+The automated tests cover:
+
+* **Success case** — verifies that the hybrid retriever returns documents and includes the expected relevant document.
+* **Failure case** — verifies that an invalid `k` value raises a `ValueError`.
+
+Run the tests:
+
+```bash
+uv run pytest tests/test_hybrid_retriever.py -v
+```
+
+Save the pytest output:
+
+```bash
+uv run pytest tests/test_hybrid_retriever.py -v > outputs/test_hybrid_retriever.txt 2>&1
+```
+
+### Task 3 Result
+
+The hybrid retriever successfully:
+
+* Reuses the dense retriever from Task 1.
+* Reuses the BM25 retriever from Task 2.
+* Combines both using `EnsembleRetriever`.
+* Uses configurable weights for the two retrieval strategies.
+* Validates invalid `k` values.
+* Includes automated success and failure tests.
 
