@@ -1,0 +1,11 @@
+QUERY:
+retrieval methods and document filtering
+
+FILTER:
+source = blog
+
+RESULTS:
+doc4 | source=blog | Metadata filters restrict retrieval using document properties.
+doc3 | source=blog | Hybrid retrieval combines dense and sparse search results.
+
+TOTAL RESULTS: 2

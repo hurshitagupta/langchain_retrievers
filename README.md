@@ -254,3 +254,98 @@ The hybrid retriever successfully:
 * Validates invalid `k` values.
 * Includes automated success and failure tests.
 
+---
+
+## Task 4 — Metadata Filters
+
+### Objective
+
+The goal of this task is to restrict retrieval results using document metadata and prove that the applied filter is respected.
+
+For this task, the `source` metadata field is used as the filter.
+
+### Implementation
+
+The same document corpus from the previous tasks is reused. Each document already contains metadata such as:
+
+```python
+metadata={
+    "id": "doc3",
+    "source": "blog",
+    "tag": "hybrid"
+}
+```
+
+A FAISS vector store is created using the documents and embeddings.
+
+The metadata filter is then passed through `search_kwargs`:
+
+```python
+retriever = vector_store.as_retriever(
+    search_kwargs={
+        "k": k,
+        "filter": {"source": source},
+    }
+)
+```
+
+For example, when:
+
+```python
+source = "blog"
+```
+
+the retriever only returns documents whose metadata contains:
+
+```python
+{"source": "blog"}
+```
+
+This allows vector retrieval to be restricted to a specific group of documents.
+
+
+### Run the Task
+
+```bash
+uv run python -m metadata_filters.metadata_filters
+```
+
+### Save the Output
+
+```bash
+uv run python -m metadata_filters.metadata_filters > outputs/metadata_filters_output.txt 2>&1
+```
+
+### Tests
+
+The automated tests cover:
+
+* **Success case** — verifies that results are returned and every returned document has `source="blog"`.
+* **Failure case** — verifies that an empty source raises a `ValueError`.
+
+Run the tests:
+
+```bash
+uv run pytest tests/test_metadata_filters.py -v
+```
+
+Save the pytest output:
+
+```bash
+uv run pytest tests/test_metadata_filters.py -v > outputs/test_metadata_filters.txt 2>&1
+```
+
+### Task 4 Result
+
+The metadata filter implementation successfully:
+
+* Reuses the existing document corpus.
+* Performs vector-based retrieval.
+* Filters documents using the `source` metadata field.
+* Supports configurable `source` and `k`.
+* Prevents empty filter values.
+* Proves that every returned document matches the requested metadata.
+* Includes automated success and failure tests.
+
+
+
